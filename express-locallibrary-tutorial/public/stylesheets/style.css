@@ -1,5 +1,9 @@
 .sidebar-nav {
-    margin-top: 20px;
-    padding: 0;
+    min-height: 400px;
+    padding-top: 20px;
     list-style: none;
+    background-color: #eee;
+    border-right-color: #11f;
+    border-right-style: solid;
+    border-right-width: medium;
 }

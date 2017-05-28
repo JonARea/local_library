@@ -30,7 +30,7 @@ var BookSchema = Schema({
 BookSchema
   .virtual('url')
   .get(function (){
-    return 'book/' + this._id;
+    return '/catalog/book/' + this._id;
   });
 
   module.exports = mongoose.model('Book', BookSchema);
