@@ -7,12 +7,16 @@ var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var compression = require('compression');
 var helmet = require('helmet');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var catalog = require('./routes/catalog');
 
 var app = express();
+
 //database connection
 var mongoose = require('mongoose');
 var mongoDB = process.env.MONGODB_URI || 'mongodb://admin:admin@ds113630.mlab.com:13630/local_library'
@@ -33,11 +37,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/catalog', catalog);
+
+//passport config
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
