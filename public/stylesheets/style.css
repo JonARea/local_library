@@ -7,3 +7,7 @@
     border-right-style: solid;
     border-right-width: medium;
 }
+
+.error-msg {
+  color: red;
+}
